@@ -185,13 +185,13 @@ local spec_names = {
 		PaladinProtection = "Prot Pala",
 		PaladinCombat = "Retri Pala",
 
-		HunterBeastMastery = "BM Hunt",
-		HunterMarksmanship = "MM Hunt",
-		HunterSurvival = "Surv Hunt",
+		HunterBeastMastery = "BM Hunter",
+		HunterMarksmanship = "MM Hunter",
+		HunterSurvival = "Svl Hunter",
 
-		RogueAssassination = "Assa Rog",
-		RogueCombat = "Combat Rog",
-		RogueSubtlety = "Sub Rog",
+		RogueAssassination = "Assa Rogue",
+		RogueCombat = "Cmbt Rogue",
+		RogueSubtlety = "Sub Rogue",
 
 		PriestDiscipline = "Disco Heal",
 		PriestHoly = "Holy Priest",
@@ -362,6 +362,9 @@ end
 ---@return string?, integer?
 ---@nodiscard
 function RaidBrowser.stats.get_raidset(set)
+	if set == 'Active' then
+		return RaidBrowser.stats.get_active_raidset()
+	end
 	local raidset = RaidBrowserCharacterRaidsets[set];
 	if not raidset then return end
 	return raidset.spec, raidset.gs;

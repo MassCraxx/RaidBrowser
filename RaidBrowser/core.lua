@@ -130,6 +130,7 @@ local raid_list = {
 		patterns = {
 			'icc' .. csep .. '10' .. csep .. 'm?a?n?' .. csep .. 'repu?t?a?t?i?o?n?' .. csep,
 			'icc' .. csep .. 'repu?t?a?t?i?o?n?' .. csep .. '10',
+			'icc' .. csep .. '10' .. csep .. 'repu?t?a?t?i?o?n?',
 			'icc' .. csep .. '10' .. csep .. 'nm?' .. csep .. 'farm',
 			'icc' .. csep .. 'nm?' .. csep .. 'farm',
 			'icc' .. csep .. 'repu?t?a?t?i?o?n?',
@@ -726,6 +727,8 @@ local role_patterns = {
 		'm[dp][dp]s' .. meta_or_sep,
 		'r[dp][dp]s',
 		'dps',
+		'melee',
+		'ranged',
 	},
 
 	healer = {
@@ -753,7 +756,7 @@ local role_patterns = {
 		'ta*n+a?k+s?', -- NEED TANKS
 		'b[ea][ea]+rs?',
 		'prote?c?t?i?o?n?', -- NEED PROT PALA/WARRI
-		'fr?o?s?t? ?dk' -- frost DK
+		'fr?o?s?t? ?dk', -- frost DK
 	},
 }
 
@@ -770,6 +773,7 @@ local gearscore_patterns = {
 
 local guild_recruitment_patterns = {
 	'recrui?ti?n?g?',
+	'reclutan?d?o?',
 	'we' .. csep .. 'raid',
 	'we' .. csep .. 'are' .. csep .. 'raidi?n?g?',
 	'[<({-][%a%s]+[-})>]' .. csep .. 'is' .. csep .. 'a?', -- (<GuildName> is a) pve guild looking for
@@ -780,6 +784,8 @@ local guild_recruitment_patterns = {
 	'active' .. csep .. 'raiders?',
 	'is' .. csep .. 'a' .. csep .. '[%a]*' .. csep .. '[pvep][pvep][pvep]' .. csep .. 'guild',
 	'lf' .. sep .. 'members',
+	'new' .. sep .. 'members',
+	'Apply' .. sep .. 'here',
 };
 
 local trade_message_patterns = {
@@ -1250,7 +1256,6 @@ function RaidBrowser:OnEnable()
 		table.insert(channel_listeners, RaidBrowser.add_event_listener(channel, event_handler))
 	end
 
-	RaidBrowser.gui.raidset.initialize();
 	RaidBrowser.check_button()
 end
 

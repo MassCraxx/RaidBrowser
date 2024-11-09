@@ -29,21 +29,20 @@ end
 local function set_selection(selection)
 	local text = '';
 
-	if selection == 'Active' then
-		text = 'Active';
-
-	elseif selection == 'Both' then
+	if selection == 'Both' then
 		local spec1, gs1 = RaidBrowser.stats.get_raidset('Primary')
 		local spec2, gs2 = RaidBrowser.stats.get_raidset('Secondary')
 		
 
 		if spec1 and gs1 then
+			gs1 = math.floor(gs1 / 100) / 10
 			text = text .. gs1 .. ' ' .. spec1
 		else
 			text = text .. '-'
 		end
 		text = text .. ' / '
 		if spec2 and gs2 then
+			gs2 = math.floor(gs2 / 100) / 10
 			text = text .. gs2 .. ' ' .. spec2
 		else
 			text = text .. '-'
@@ -160,7 +159,7 @@ frame:SetPoint("CENTER", LFRBrowseFrame, "CENTER", 30, 165)
 UIDropDownMenu_Initialize(frame, EasyMenu_Initialize, nil, nil, menu);
 
 local function show_menu()
-	menu[1].text = get_option_active('Active');
+	menu[1].text = get_option_text('Active');
 	menu[2].text = get_option_text('Primary');
 	menu[3].text = get_option_text('Secondary');
 	menu[4].text = get_option_texts('Both');
@@ -207,6 +206,22 @@ function RaidBrowser.check_button()
         RaidBrowserRaidSetSaveButton:Show()
     end
 end
+
+local function onEvent(this, event, arg1)
+	if event == "PLAYER_EQUIPMENT_CHANGED" or "PLAYER_SPECIALIZATION_CHANGED" then
+		RaidBrowser.gui.raidset.initialize()
+	end
+end
+
+local function onShow(this)
+	-- update displayed Spec + GS in selection onShow
+	RaidBrowser.gui.raidset.initialize()
+end
+
+frame:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED")
+frame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
+frame:SetScript("OnEvent", onEvent)
+frame:SetScript("onShow", onShow)
 
 
 -- Create raidset save button
