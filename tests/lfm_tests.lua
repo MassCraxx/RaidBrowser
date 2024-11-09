@@ -1,3 +1,5 @@
+-- to run enter /run RaidBrowser.test()
+
 local test_cases = {
 	{
 		message = 'ICC 25N ALT LK RUN @LK NEED Only 1Rshaman/Tank 5.6K GS ++ REQ KS OR NO [INV] (B+P+SFS RESS) [The Light of Dawn]',
@@ -804,6 +806,15 @@ local test_cases = {
 	},
 
 	{
+		message = 'LFM ICC [REP FARM] need all (all loot reserved)',
+		should_fail = false,
+		raid = 'icc10rep',
+		roles = { 'dps', 'tank', 'healer' },
+		gs = ' '
+	},
+
+
+	{
 		message = ' LFM ICC 25 n/hcNEED boom gs+5.9[Heroic: The Frostwing Halls (25 player)]no achi no [inv]',
 		should_fail = false,
 		raid = 'icc25hc',
@@ -1324,14 +1335,14 @@ local test_cases = {
 	},
 
 	{
-		message = 'Die "Deutsche Wehrmacht" rekrutiert ab sofort neue deutschsprachige Mitglieder. Wöchtenlich ICC 10 und 25, bei genug Mitgliedern gerne auch Alt-Runs. TS und Discord ist verfügbar. Wir heißen jegliche Spieler aus dem deutschen Sprachraum herzlich willko',
+		message = 'Die "Deutschen Pannemänner" rekrutiert ab sofort neue deutschsprachige Mitglieder. Wöchtenlich ICC 10 und 25, bei genug Mitgliedern gerne auch Alt-Runs. TS und Discord ist verfügbar. Wir heißen jegliche Spieler aus dem deutschen Sprachraum herzlich willko',
 		should_fail = true,
 	},
 
 	{
 		message = 'NEW RUN [Sartharion Must Die!] 25er w me info !!',
 		should_fail = false,
-		raid = 'os25wq',
+		raid = 'os10wq',
 		roles = { 'tank', 'dps', 'healer' },
 		gs = ' ',
 	},
@@ -1463,6 +1474,23 @@ local test_cases = {
 		roles = { 'dps', 'tank' },
 		gs = ' ',
 	},
+
+	{
+		message = 'Newly formed, end game raiding guild <Glyph> led by a group of experienced raiders is looking for new members. Progress ICC 25 HC 12/12 . Req 6.2+ gs and end game exp. DKP system RT 5 pm ST . Apply here [https://discord.gg/6USp2QAbWV]',
+		should_fail = true,
+	},
+	{
+		message = '[RU] PvE Guild <Lightning Rod> Nabiraet igrokov (FWAR, SP/DISCO, BOOMIE/RDUDU, DEMON,HUNT) ot 5k gs. DKP system. RT 19:00. Haw progress: LOD, BANE. 4 ICC v nedelu, 1 LOD, 2 11/12 HC, 3,4-8-10/12 HC. Za info /w me.',
+		should_fail = true,
+	},
+
+	{
+		message = '	LFM RS 25 NM NEED ALL 5K9 GS /W GS / XP / ACH ( Only NECK ARPEN RES ) LFM RS 25 NM NEED ALL 5K9 GS /W GS / XP / ACH ( Only NECK ARPEN RES ) LFM RS 25 NM NEED ALL 5K9 GS /W GS / XP / ACH ( Only NECK ARPEN RES ) LFM RS 25 NM NEED ALL 5K9 GS /W GS /',
+		should_fail = false,
+		raid = 'rs25',
+		roles = { 'healer', 'tank', 'dps' },
+		gs = '5.9',
+	},
 }
 
 local function array_contains(t, element)
@@ -1575,6 +1603,7 @@ end
 
 RaidBrowser.test = function(m)
 	if m == nil then
+		RaidBrowser:Print('Start test run of predefined test cases (lfm_tests.lua)');
 		-- Run all the test cases
 		local test_results = std.algorithm.transform(test_cases, run_test_case);
 		
