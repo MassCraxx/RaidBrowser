@@ -1487,7 +1487,7 @@ local test_cases = {
 	{
 		message = '	LFM RS 25 NM NEED ALL 5K9 GS /W GS / XP / ACH ( Only NECK ARPEN RES ) LFM RS 25 NM NEED ALL 5K9 GS /W GS / XP / ACH ( Only NECK ARPEN RES ) LFM RS 25 NM NEED ALL 5K9 GS /W GS / XP / ACH ( Only NECK ARPEN RES ) LFM RS 25 NM NEED ALL 5K9 GS /W GS /',
 		should_fail = false,
-		raid = 'rs25',
+		raid = 'rs25nm',
 		roles = { 'healer', 'tank', 'dps' },
 		gs = '5.9',
 	},
