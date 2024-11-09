@@ -111,16 +111,16 @@ local raid_achievements = {
 		1402, -- Realm First! Conqueror of Naxxramas
 	},
 
-	voa = {
-		1722, -- Archavon the Stone Watcher 10
-		3136, -- Emalon the Storm Watcher 10
-		3836, -- Koralon the Flame Watcher 10
-		4585, -- Toravon the Ice Watcher 10
-		1721, -- Archavon the Stone Watcher 25
-		3137, -- Emalon the Storm Watcher 25
-		3837, -- Koralon the Flame Watcher 25
-		4586, -- Toravon the Ice Watcher 25
-	}
+	--voa = {
+	--	1722, -- Archavon the Stone Watcher 10
+	--	3136, -- Emalon the Storm Watcher 10
+	--	3836, -- Koralon the Flame Watcher 10
+	--	4585, -- Toravon the Ice Watcher 10
+	--	1721, -- Archavon the Stone Watcher 25
+	--	3137, -- Emalon the Storm Watcher 25
+	--	3837, -- Koralon the Flame Watcher 25
+	--	4586, -- Toravon the Ice Watcher 25
+	--}
 };
 
 local spec_names = {
@@ -281,7 +281,7 @@ function RaidBrowser.stats.active_spec()
 	local _, class = UnitClass("player");
 
 	-- TODO: make config to toggle using full or short spec names
-	local readable_spec_name = spec_names["full"][spec_name] or spec_name;
+	local readable_spec_name = spec_names["short"][spec_name] or spec_name;
 	
 	-- If we're a feral druid, then we need to distinguish between tank and cat feral.
 	if spec_name == 'DruidFeralCombat' then
@@ -300,7 +300,7 @@ function RaidBrowser.stats.active_spec()
 		local toughness_talent = 3;
 		local blade_barrier_talent = 3;
 		local _, _, _, _, points = GetTalentInfo(2, toughness_talent)
-		local _, _, _, _, points2 = GetTalentInfo(1, 3)
+		local _, _, _, _, points2 = GetTalentInfo(1, blade_barrier_talent)
 		if points > 3 and points2 > 3 then
 			return readable_spec_name .. ' (Tank)'
 		else

@@ -3,7 +3,7 @@ RaidBrowser = LibStub('AceAddon-3.0'):NewAddon('RaidBrowser', 'AceConsole-3.0')
 
 --[[ Parsing and pattern matching ]] --
 -- Separator characters
-local sep_chars = '%s-_,.<>%*)(/#+&x'
+local sep_chars = '%s-_,.<>%*)(/#+&x\\['
 
 -- Whitespace separator
 local sep = '[' .. sep_chars .. ']';
@@ -753,6 +753,7 @@ local role_patterns = {
 		'ta*n+a?k+s?', -- NEED TANKS
 		'b[ea][ea]+rs?',
 		'prote?c?t?i?o?n?', -- NEED PROT PALA/WARRI
+		'fr?o?s?t? ?dk' -- frost DK
 	},
 }
 
@@ -840,7 +841,7 @@ local lfm_patterns = {
 	lfm .. non_meta .. meta_raid,
 
 	meta_raid .. non_meta .. meta_role,
-	'new' .. csep .. 'run' .. meta_raid,
+	'new' .. csep .. 'run' .. csep .. meta_raid,
 }
 
 local guild_recruitment_metapatterns = {
@@ -1094,12 +1095,27 @@ function RaidBrowser.lex_and_extract(message, debug)
 
 	-- Get the raid_info from the message
 	local raid_info, raid_lexed_message, num_unique_raids = RaidBrowser.lex_raid_info(message, debug);
-	if not raid_info or not raid_lexed_message or not num_unique_raids then return end
+	if not raid_info or not raid_lexed_message or not num_unique_raids then 
+		if debug then
+			RaidBrowser:Print("No valid raid found.");
+		end
+		return 
+	end 
 
-	if has_guild_recruitment_production(raid_lexed_message) then return end
+	if has_guild_recruitment_production(raid_lexed_message) then 
+		if debug then
+			RaidBrowser:Print("Raid message was guild invite...");
+		end
+		return 
+	end
 
 	-- If there are multiple distinct raids, then it is most likely a recruitment message.
-	if num_unique_raids > 1 then return end
+	if num_unique_raids > 1 then 
+		if debug then
+			RaidBrowser:Print("found mulitple raids, could be recruiting...");
+		end
+		return 
+	end
 
 	raid_lexed_message = lex_achievements(raid_lexed_message);
 
@@ -1133,10 +1149,20 @@ function RaidBrowser.raid_info(message, debug)
 	if not lexed_message then return end
 
 	-- Any message that is lexed out to be an lfg is excluded (unfortunately near the end).
-	if is_lfg_message(lexed_message, debug) then return end
+	if is_lfg_message(lexed_message, debug) then 
+		if debug then
+			RaidBrowser:Print("message was lfg: " .. lexed_message);
+		end
+		return 
+	end
 
 	-- Parse symbols to determine if the message is valid
-	if not is_lfm_message(lexed_message, debug) then return end
+	if not is_lfm_message(lexed_message, debug) then 
+		if debug then
+			RaidBrowser:Print("message was not lfm: " .. lexed_message);
+		end
+		return 
+	end
 
 	return raid_info, roles, gs or ' ';
 end
